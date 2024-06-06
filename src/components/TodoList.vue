@@ -2,6 +2,12 @@
     <div class="todo-list">
         <h1>To-Do List</h1>
         <input v-model="newTask" @keyup.enter="addTask" placeholder="Add a new task">
+        <select v-model="newTaskPriority">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+        <button @click="addTask" class="add-task">Add Task</button>
         <ul>
             <li v-for="task in tasks" :key="task.id">
                 {{ task.text }}
@@ -16,6 +22,7 @@ export default {
     data() {
         return {
             newTask: '',
+            newTaskPriority: 'low',
             tasks: this.getTasksFromLocalStorage()
         }
     },
@@ -30,8 +37,9 @@ export default {
     methods: {
         addTask() {
             if(this.newTask.trim()) {
-                this.tasks.push({ id: Date.now(), text: this.newTask });
+                this.tasks.push({ id: Date.now(), text: this.newTask, priority: this.newTaskPriority });
                 this.newTask = '';
+                this.newTaskPriority = 'low';
             }
         },
         removeTask(id) {
@@ -56,7 +64,7 @@ export default {
         border: 1px solid #cccc;
         border-radius: 8px;
     }
-    input {
+    input, select, .add-task {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
@@ -82,5 +90,14 @@ export default {
     }
     button:hover{
         background: #cc0000;
+    }
+    .low {
+        color: green;
+    }
+    .medium {
+        color: orange;
+    }
+    .high {
+        color: red;
     }
 </style>
